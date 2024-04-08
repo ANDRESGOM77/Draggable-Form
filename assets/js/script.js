@@ -23,7 +23,6 @@ function createTaskCard(task) {
     let deleteBtn = $('<button>').addClass('btn btn-danger').text('Delete').attr('data-task-id', task.id)
 
     deleteBtn.on('click', handleDeleteTask)
-    // card.append($('<p></p>').text(task.textDescription));
 
     card.append(title, dueDate,textDescription, deleteBtn);
 
@@ -102,12 +101,32 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    
+    event.preventDefault();
+    const taskId = ui.draggable.find('[data-task-id]').data('task-id');
+    const newStatus = $(this).data('status');
 
-}
+
+    const taskIndex = taskList.findIndex(task => task.id === taskId);
+
+    if (taskIndex !== -1) {
+
+        taskList[taskIndex].status = newStatus;
+
+        localStorage.setItem('tasks', JSON.stringify(taskList));
+
+        renderTaskList();
+}};
+
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
     const form = $('#form');
     form.on('submit', handleAddTask)
     renderTaskList()
+
+    $('.lane').droppable({
+        accept: '.draggable',
+        drop: handleDrop,
+      });
 });
