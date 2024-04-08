@@ -19,12 +19,12 @@ function createTaskCard(task) {
     let card = $('<div>').addClass('taskCard draggable card');
     let title = $('<h2>').addClass('card-title').text(task.title)
     let dueDate = $('<p>').addClass('card-date').text(task.date)
-    let textDescription= $('<p>').addClass('card-text').text(task.textDescription)
+    let textDescription = $('<p>').addClass('card-text').text(task.textDescription)
     let deleteBtn = $('<button>').addClass('btn btn-danger').text('Delete').attr('data-task-id', task.id)
 
     deleteBtn.on('click', handleDeleteTask)
 
-    card.append(title, dueDate,textDescription, deleteBtn);
+    card.append(title, dueDate, textDescription, deleteBtn);
 
     return card;
 }
@@ -40,7 +40,7 @@ function renderTaskList() {
 
     for (let task of taskList) {
         if (task.status === 'toDo') {
-           
+
             todoList.append(createTaskCard(task))
         } else if (task.status === 'inProgress') {
             inProgressList.append(createTaskCard(task))
@@ -68,7 +68,7 @@ function renderTaskList() {
 }
 
 // Todo: create a function to handle adding a new task
-function handleAddTask(event){
+function handleAddTask(event) {
     event.preventDefault();
 
     let title = $('#title');
@@ -89,23 +89,25 @@ function handleAddTask(event){
 }
 
 // Todo: create a function to handle deleting a task
-function handleDeleteTask(event){
+function handleDeleteTask(event) {
     event.preventDefault();
     const taskId = $(this).attr('data-task-id');
 
     taskList = taskList.filter((task) => task.id !== parseInt(taskId))
-  
+
     localStorage.setItem('tasks', JSON.stringify(taskList))
     renderTaskList()
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    
-    event.preventDefault();
-    const taskId = ui.draggable.find('[data-task-id]').data('task-id');
-    const newStatus = $(this).data('status');
 
+    event.preventDefault(); 
+
+    const taskList = JSON.parse(localStorage.getItem("tasks")) || []; 
+
+    const taskId = ui.draggable[0].dataset.taskId; 
+    const newStatus = event.target.id; 
 
     const taskIndex = taskList.findIndex(task => task.id === taskId);
 
@@ -116,7 +118,8 @@ function handleDrop(event, ui) {
         localStorage.setItem('tasks', JSON.stringify(taskList));
 
         renderTaskList();
-}};
+    }
+}
 
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
@@ -128,5 +131,5 @@ $(document).ready(function () {
     $('.lane').droppable({
         accept: '.draggable',
         drop: handleDrop,
-      });
+    });
 });
