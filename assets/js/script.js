@@ -107,5 +107,7 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
-
+    const form = $('#form');
+    form.on('submit', handleAddTask)
+    renderTaskList()
 });
