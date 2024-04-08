@@ -70,7 +70,23 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
+    event.preventDefault();
 
+    let title = $('#title');
+    let date = $('#date');
+    let textDescription = $('#textDescription');
+
+    const task = {
+        id: generateTaskId(),
+        title: title.val(),
+        date: date.val(),
+        textDescription: textDescription.val(),
+        status: 'toDo'
+    }
+
+    taskList.push(task)
+    localStorage.setItem('tasks', JSON.stringify(taskList))
+    renderTaskList();
 }
 
 // Todo: create a function to handle deleting a task
