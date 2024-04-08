@@ -16,7 +16,18 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-   
+    let card = $('<div>').addClass('taskCard draggable card');
+    let title = $('<h2>').addClass('card-title').text(task.title)
+    let dueDate = $('<p>').addClass('card-date').text(task.date)
+    let textDescription= $('<p>').addClass('card-text').text(task.textDescription)
+    let deleteBtn = $('<button>').addClass('btn btn-danger').text('Delete').attr('data-task-id', task.id)
+
+    deleteBtn.on('click', handleDeleteTask)
+    // card.append($('<p></p>').text(task.textDescription));
+
+    card.append(title, dueDate,textDescription, deleteBtn);
+
+    return card;
 }
 
 // Todo: create a function to render the task list and make cards draggable
