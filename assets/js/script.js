@@ -91,7 +91,13 @@ function handleAddTask(event){
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
+    event.preventDefault();
+    const taskId = $(this).attr('data-task-id');
 
+    taskList = taskList.filter((task) => task.id !== parseInt(taskId))
+  
+    localStorage.setItem('tasks', JSON.stringify(taskList))
+    renderTaskList()
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
